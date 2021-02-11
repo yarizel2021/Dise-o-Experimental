@@ -1,0 +1,24 @@
+---
+title: "Problema 3-12"
+author: "Yarizel Guerra"
+date: "02/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Resolución del problema 3-12
+```{r}
+En un centro de investigación se realiza un estudio para comparar varios tratamientos que, al aplicarse previamente a los frijoles crudos, reducen su tiempo de cocción. Estos tratamientos son a base de bicarbonato de sodio (NaHCO3) y cloruro de sodio o sal común (NaCl). El primer tratamiento es el de control, que consiste en no aplicar ningún tratamiento. El tratamiento T2 es el remojo en agua con bicarbonato de sodio, el T3 es remojar en agua con sal común y el T4 es remojar en agua con una combinación de ambos ingredientes en proporciones iguales. La variable de respuesta es el tiempo de cocción en minutos. Los datos se muestran en la siguiente tabla:
+```
+## Entrada de los datos
+
+```{r}
+df=read.csv("https://raw.githubusercontent.com/yarizel2021/Dise-o-Experimental/main/Tratamiento.csv")
+
+str(df)
+df$Trat=factor(df$Trat)
+```
+

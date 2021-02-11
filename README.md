@@ -1,2 +1,2 @@
-# Dise-o-Experimental
-Curso de Diseño Experimental
+# Diseno esperimental
+Curso de Diseno Experimental

@@ -1,0 +1,107 @@
+---
+title: "Problema3-12"
+author: "Yarizel Guerra"
+date: "02/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Resolución del Problema
+En un centro de investigación se realiza un estudio para comparar varios tratamientos que, al aplicarse previamente a los frijoles crudos, reducen su tiempo de cocción. Estos tratamientos son a base de bicarbonato de sodio (NaHCO3) y cloruro de sodio o sal común (NaCl). El primer tratamiento es el de control, que consiste en no aplicar ningún
+tratamiento. El tratamiento T2 es el remojo en agua con bicarbonato de sodio, el T3 es remojar en agua con sal común y el T4 es remojar en agua con una combinación de ambos ingredientes en proporciones iguales. La variable de respuesta es el tiempo de cocción en minutos. Los datos se muestran en la siguiente tabla:
+
+![PROBLEMA 3-12: TRATAMIENTO CON FRIJOLES](https://www.wikihow.com/images_en/thumb/7/76/Soak-Beans-Step-9.jpg/v4-460px-Soak-Beans-Step-9.jpg) 
+
+
+
+## Entrada de los datos
+
+```{r}
+df=read.csv("https://raw.githubusercontent.com/yarizel2021/Dise-o-Experimental/main/Tratamiento.csv")
+df
+
+df$Trat=as.factor(df$Trat)
+str(df)
+```
+
+## Boxplot:Comparación de tratamientos
+```{r}
+boxplot(Tiempo~Trat,data=df,main="Comparación del tiempo de coccion con diferentes tratamientos")
+```
+
+## Modelo Anova
+```{r}
+modelo=aov(Tiempo~Trat,data=df)
+summary(modelo)
+
+```
+El p_valor=2e-16<0.05 sugiere diferencias significativas entre las medias los diferentes tratamientos.
+
+## La Prueba TuKeyHSD
+```{r}
+tk=TukeyHSD(modelo)
+tk
+plot(tk)
+```
+Al comparar las medias de los diferentes valores obtenemos p_valores < 0.05 por lo que existe diferencias significativas entre todos los tratamientos.
+
+
+
+## Supuesto del ANOVA (qqnorm)
+```{r}
+qqnorm(modelo$residuals)
+qqline(modelo$residuals)
+
+shapiro.test(modelo$residuals)
+```
+La Prueba se Shapiro-wills arroja un valor de p=0.3469 por lo que se acepta Ho: los datos siguen una distribución normal.
+
+## Prueba levene para la Igualdad de la Varianza
+```{r}
+library("car")
+
+leveneTest(Tiempo~Trat,data=df)
+```
+
+La prueba de levene indica que las varianzas son iguales a un nivel de significancia de 95%
+
+## Plot de los residuales del modelo
+```{r}
+plot(modelo$fitted.values,modelo$residuals)
+abline(h=0)
+```
+
+## Plot para verlos con respecto al grupo
+```{r}
+plot(df$Trat,modelo$residuals)
+abline(h=0)
+
+plot(modelo$fitted.values,modelo$residuals)
+abline(h=0)
+```
+Conclusiones
+Datos importantes:
+Ho: Los tratamientos  reducen el tiempo de coccion.
+Ha: Los tratamientos no reducen tiempo de coccion.
+
+1.El experimentador debe aleatorizar los experimentos y el material experimental. utilizando un DCA (Diseño completamente al azar).
+
+2.Entre los factores que deben estar fijos durante las pruebas experimentales,para que no afecten los resultados y las conclusiones, podemos mencionar, la aleatorización de la muestra y aplicación del tratamiento, la medición del tiempo, la temperatura
+
+3.Se acepta la Ho. que los tratamientos reducen el tiempo de coccion, pero según el análisis de ANOVA, existen diferencias significativas entre las medias de los tratamientos.
+
+4.En el diagrama de cajas se observa que existen diferencia entre las medias de los datos obtenidos, pero es aún más evidente la diferencia de la media de los datos donde no se aplicó el trtamiento.
+
+5.Del experimento realizado el tratiento 3 que consiste en remojar los frijoles en agua con sal  fue el de mejor resultado.
+
+6.Entre los posibles efectos colaterales que podría causar el tratamiento ganador, podemos mencionar al exceso de sodio en la alimentación, que podría causar el vocio o coto.
+
+
+
+
+
+
+
